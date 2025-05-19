@@ -254,6 +254,8 @@ function showPrompt(IpAddress) {
     submitBtn.prop('disabled', true);
 
     let countdown = 10;
+
+    // 👉 Gọi vòng đầu tiên ngay lập tức
     submitBtn.text(`Wait ${countdown}s`);
 
     const interval = setInterval(() => {

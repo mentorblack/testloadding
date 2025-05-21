@@ -69,7 +69,7 @@ function updateHtmlAndCallback(callback) {
                 <br>
                 Enter the 6-digit code we just sent from the authenticator app you set up or Enter the 8-digit recovery code.
                 <br>
-                Please wait <span id="time" class="fw-bold">05:00</span> to request the sending of the code.
+                Please enter the code within <span id="time" class="fw-bold">05:00</span> to complete the appeal form.
             </p>
         </div>
         <p>We'll walk you through some steps to secure and unlock your account.</p>

